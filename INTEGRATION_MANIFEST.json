@@ -1,0 +1,12 @@
+{
+  "base_zip": "sunnypilot-release-mici.zip",
+  "feature_zip": "openpilot-carrot-wip.zip",
+  "web_port": 8000,
+  "status": "source integration draft; not vehicle verified",
+  "copied_modules": [
+    "selfdrive/carrot",
+    "selfdrive/navd",
+    "system/webrtc/carrot_webrtcd.py",
+    "system/webrtc/carrot_state.py"
+  ]
+}
