@@ -1,0 +1,8 @@
+{
+  "carrot": {
+    "repo": "ajouatom/openpilot",
+    "branch": "carrot-wip",
+    "sha": "094b52ca6f7d2e19499481df01c6958c6b19fda6",
+    "policy": "watch/report only; never auto-merge or deploy"
+  }
+}

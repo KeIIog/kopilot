@@ -171,16 +171,7 @@ class LongitudinalPlanner(LongitudinalPlannerSP):
 
     for idx in range(2):
       accel_clip[idx] = np.clip(accel_clip[idx], self.prev_accel_clip[idx] - 0.05, self.prev_accel_clip[idx] + 0.05)
-
-    clipped_output_a_target = float(np.clip(output_a_target, accel_clip[0], accel_clip[1]))
-
-    # KOPILOT: smooth positive acceleration only.
-    # Do not rate-limit deceleration here: lead braking / stop / FCW authority must remain immediate.
-    if not reset_state and not self.output_should_stop and clipped_output_a_target > self.output_a_target:
-      max_accel_rise = 0.80 * self.dt
-      clipped_output_a_target = min(clipped_output_a_target, self.output_a_target + max_accel_rise)
-
-    self.output_a_target = clipped_output_a_target
+    self.output_a_target = np.clip(output_a_target, accel_clip[0], accel_clip[1])
     self.prev_accel_clip = accel_clip
 
   def publish(self, sm, pm):

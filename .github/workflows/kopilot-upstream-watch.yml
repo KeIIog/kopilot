@@ -1,0 +1,26 @@
+name: Kopilot Carrot upstream watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 21 * * *"  # 06:10 KST
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check Carrot upstream
+        run: python tools/kopilot/check_carrot_upstream.py
+      - name: Static compile check
+        run: |
+          python -m py_compile             selfdrive/controls/lib/longitudinal_planner.py             selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py             system/webrtc/carrot_webrtcd.py             tools/kopilot/config.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kopilot-carrot-upstream-report
+          path: kopilot-upstream-report.txt

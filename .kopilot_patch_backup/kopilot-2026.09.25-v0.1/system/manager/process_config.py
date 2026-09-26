@@ -17,11 +17,7 @@ WEBCAM = os.getenv("USE_WEBCAM") is not None
 CARROT_WEB_EXTERNAL = os.getenv("CARROT_WEB_EXTERNAL") == "1"
 
 def driverview(started: bool, params: Params, CP: car.CarParams) -> bool:
-  # KOPILOT Pet/Remote monitor is camera-only. It does not command HVAC, ignition, steering or braking.
-  return (started
-          or params.get_bool("IsDriverViewEnabled")
-          or params.get_bool("KopilotPetMode")
-          or params.get_bool("KopilotRemoteMonitor"))
+  return started or params.get_bool("IsDriverViewEnabled")
 
 def notcar(started: bool, params: Params, CP: car.CarParams) -> bool:
   return started and CP.notCar
@@ -163,8 +159,6 @@ procs = [
   # debug procs
   NativeProcess("bridge", "cereal/messaging", ["./bridge"], notcar),
   PythonProcess("webrtcd", "system.webrtc.webrtcd", notcar),
-  # KOPILOT read-only road/driver camera monitor. Incoming cereal control is disabled in carrot_webrtcd.py.
-  PythonProcess("carrot_webrtcd", "system.webrtc.carrot_webrtcd", driverview, enabled=not PC),
   PythonProcess("webjoystick", "tools.bodyteleop.web", notcar),
   PythonProcess("joystick", "tools.joystick.joystick_control", and_(joystick, iscar)),
 
